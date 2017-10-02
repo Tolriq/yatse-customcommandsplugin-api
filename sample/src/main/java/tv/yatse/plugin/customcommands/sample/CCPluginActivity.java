@@ -20,16 +20,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import tv.yatse.plugin.customcommands.api.CustomCommandsActivity;
 
 public class CCPluginActivity extends CustomCommandsActivity {
 
-    @Bind(R.id.custom_command_title)
+    @BindView(R.id.custom_command_title)
     TextView mViewTitle;
-    @Bind(R.id.custom_command_param1)
+    @BindView(R.id.custom_command_param1)
     TextView mViewParam1;
 
     @Override
