@@ -18,9 +18,11 @@ package tv.yatse.plugin.customcommands.api;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 
 /**
- * The AVReceiverPluginService service that any plugin must extend
+ * The CustomCommandsPluginService service that any plugin must extend
  * <p/>
  * Unless noted in command description most commands can be called from main thread so should handled this correctly : Fast and no network / disk access.
  */
@@ -57,6 +59,14 @@ public abstract class CustomCommandsPluginService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), "background")
+                    .setContentTitle("Background task")
+                    .setCategory(NotificationCompat.CATEGORY_STATUS)
+                    .setPriority(NotificationCompat.PRIORITY_MIN)
+                    .setVisibility(NotificationCompat.VISIBILITY_SECRET);
+            startForeground(42, notificationBuilder.build());
+        }
         if (intent.hasExtra(EXTRA_CUSTOM_COMMAND)) {
             executeCustomCommand((PluginCustomCommand) intent.getParcelableExtra(EXTRA_CUSTOM_COMMAND),
                     intent.getStringExtra(EXTRA_STRING_MEDIA_CENTER_UNIQUE_ID),
