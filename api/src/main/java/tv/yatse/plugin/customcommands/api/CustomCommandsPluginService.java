@@ -17,9 +17,15 @@
 package tv.yatse.plugin.customcommands.api;
 
 import android.app.IntentService;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+
+import java.util.List;
+
+import androidx.core.app.NotificationCompat;
 
 /**
  * The CustomCommandsPluginService service that any plugin must extend
@@ -58,6 +64,25 @@ public abstract class CustomCommandsPluginService extends IntentService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                List<NotificationChannel> channels = manager.getNotificationChannels();
+                if (channels == null || channels.isEmpty()) {
+                    NotificationChannel channel = new NotificationChannel("background", "Background tasks", NotificationManager.IMPORTANCE_MIN);
+                    channel.setShowBadge(false);
+                    channel.enableVibration(false);
+                    channel.enableLights(false);
+                    manager.createNotificationChannel(channel);
+                }
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    @Override
     protected void onHandleIntent(Intent intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), "background")
@@ -68,12 +93,10 @@ public abstract class CustomCommandsPluginService extends IntentService {
             startForeground(42, notificationBuilder.build());
         }
         if (intent.hasExtra(EXTRA_CUSTOM_COMMAND)) {
-            executeCustomCommand((PluginCustomCommand) intent.getParcelableExtra(EXTRA_CUSTOM_COMMAND),
+            executeCustomCommand(intent.getParcelableExtra(EXTRA_CUSTOM_COMMAND),
                     intent.getStringExtra(EXTRA_STRING_MEDIA_CENTER_UNIQUE_ID),
                     intent.getStringExtra(EXTRA_STRING_MEDIA_CENTER_NAME),
                     intent.getStringExtra(EXTRA_STRING_MEDIA_CENTER_IP));
-        } else {
-            YatseLogger.getInstance(this).logError(TAG, "Plugin called without custom command to execute !");
         }
     }
 

@@ -20,16 +20,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import tv.yatse.plugin.customcommands.api.CustomCommandsActivity;
 
 public class CCPluginActivity extends CustomCommandsActivity {
 
-    @BindView(R.id.custom_command_title)
     TextView mViewTitle;
-    @BindView(R.id.custom_command_param1)
     TextView mViewParam1;
 
     @Override
@@ -37,27 +32,32 @@ public class CCPluginActivity extends CustomCommandsActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_commands);
 
-        ButterKnife.bind(this);
+        mViewTitle = findViewById(R.id.custom_command_title);
+        mViewParam1 = findViewById(R.id.custom_command_param1);
+
         if (isEditing()) {
             mViewTitle.setText(pluginCustomCommand.title());
             mViewParam1.setText(pluginCustomCommand.param1());
         }
-    }
 
-    @OnClick({R.id.btn_save, R.id.btn_cancel})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_cancel:
+        findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 cancelAndFinish();
-                break;
-            case R.id.btn_save:
+            }
+        });
+
+        findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
                 // Custom command source field must always equals to plugin uniqueId !!
                 pluginCustomCommand.source(getString(R.string.plugin_unique_id));
                 pluginCustomCommand.title(String.valueOf(mViewTitle.getText()));
                 pluginCustomCommand.param1(String.valueOf(mViewParam1.getText()));
                 saveAndFinish();
-                break;
-        }
-    }
+            }
+        });
 
+    }
 }

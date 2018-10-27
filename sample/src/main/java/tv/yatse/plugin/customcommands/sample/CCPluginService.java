@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import tv.yatse.plugin.customcommands.api.CustomCommandsPluginService;
 import tv.yatse.plugin.customcommands.api.PluginCustomCommand;
-import tv.yatse.plugin.customcommands.api.YatseLogger;
 
 /**
  * Sample CustomCommandsPluginService that implement all functions with dummy code that displays Toast and logs to main Yatse log system.
@@ -31,7 +30,6 @@ import tv.yatse.plugin.customcommands.api.YatseLogger;
  */
 public class CCPluginService extends CustomCommandsPluginService {
     private Handler handler = new Handler(Looper.getMainLooper());
-    private static final String TAG = "AVPluginService";
 
     public CCPluginService() {
         super();
@@ -40,7 +38,6 @@ public class CCPluginService extends CustomCommandsPluginService {
     @Override
     protected void executeCustomCommand(PluginCustomCommand pluginCustomCommand, String hostId, String hostName, String hostIP) {
         displayToast(pluginCustomCommand.param1());
-        YatseLogger.getInstance(this).logVerbose(TAG, "Starting customCommand : %s", pluginCustomCommand.title());
     }
 
     private void displayToast(final String message) {
