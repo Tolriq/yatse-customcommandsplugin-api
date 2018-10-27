@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * <p/>
  * This is the definition of custom commands that plugins can use to allow integration in Yatse.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class PluginCustomCommand implements Parcelable {
 
     /**
@@ -502,9 +502,8 @@ public class PluginCustomCommand implements Parcelable {
      * Deserialize from a JSONObject.
      *
      * @param data the JSONObject
-     * @throws JSONException the jSON exception
      */
-    public void deserialize(JSONObject data) throws JSONException {
+    public void deserialize(JSONObject data) {
         int version = data.optInt(KEY_VERSION);
         if (version >= 1) {
             this.mId = data.optInt(KEY_ID);
