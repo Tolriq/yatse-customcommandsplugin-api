@@ -13,39 +13,28 @@
  * limitations under the License.
  *
  */
+package tv.yatse.plugin.customcommands.sample
 
-package tv.yatse.plugin.customcommands.sample;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
-
-import tv.yatse.plugin.customcommands.api.CustomCommandsPluginService;
-import tv.yatse.plugin.customcommands.api.PluginCustomCommand;
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
+import tv.yatse.plugin.customcommands.api.CustomCommandsPluginReceiver
+import tv.yatse.plugin.customcommands.api.PluginCustomCommand
 
 /**
  * Sample CustomCommandsPluginService that implement all functions with dummy code that displays Toast and logs to main Yatse log system.
- * <p/>
- * See {@link CustomCommandsPluginService} for documentation on all functions
+ *
+ *
+ * See [CustomCommandsPluginReceiver] for documentation on all functions
  */
-public class CCPluginService extends CustomCommandsPluginService {
-    private Handler handler = new Handler(Looper.getMainLooper());
-
-    public CCPluginService() {
-        super();
+class CCPluginReceiver : CustomCommandsPluginReceiver() {
+    private val handler = Handler(Looper.getMainLooper())
+    override fun executeCustomCommand(context: Context, pluginCustomCommand: PluginCustomCommand?, hostId: String?, hostName: String?, hostIP: String?) {
+        displayToast(context, pluginCustomCommand!!.param1)
     }
 
-    @Override
-    protected void executeCustomCommand(PluginCustomCommand pluginCustomCommand, String hostId, String hostName, String hostIP) {
-        displayToast(pluginCustomCommand.param1());
-    }
-
-    private void displayToast(final String message) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
+    private fun displayToast(context: Context, message: String) {
+        handler.post { Toast.makeText(context, message, Toast.LENGTH_SHORT).show() }
     }
 }

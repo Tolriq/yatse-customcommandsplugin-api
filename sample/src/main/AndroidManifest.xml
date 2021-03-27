@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2015 Tolriq / Genimee.
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,15 +12,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<manifest
-    package="tv.yatse.plugin.customcommands.sample"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tv.yatse.plugin.customcommands.sample">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
@@ -29,44 +27,43 @@
         <!-- Do not forget to export the activities. ! -->
         <activity
             android:name=".CCPluginActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
 
         <!--
         Do not forget to export the service.
         android:icon must point to a drawable. Mipmaps are not supported !
         -->
-        <service
-            android:name=".CCPluginService"
+        <receiver
+            android:name=".CCPluginReceiver"
             android:exported="true"
             android:icon="@drawable/ic_plugin_icon"
             android:label="@string/sample_plugin_name"
-            tools:ignore="ExportedService">
+            tools:ignore="ExportedReceiver,ExportedService">
             <intent-filter>
                 <!-- This value is mandatory for Yatse to detect custom commands plugins ! -->
-                <action android:name="tv.yatse.plugin.customcommands.PluginService"/>
+                <action android:name="tv.yatse.plugin.customcommands.PluginReceiver" />
             </intent-filter>
             <!-- Protocol version, must match the API version you are using ! -->
             <meta-data
                 android:name="protocolVersion"
-                android:value="1"/>
+                android:value="1" />
             <!-- Do not forget to change the unique ID string to a real unique uuid for your plugin ! -->
             <meta-data
                 android:name="uniqueId"
-                android:value="@string/plugin_unique_id"/>
+                android:value="@string/plugin_unique_id" />
             <!-- Plugin description ! -->
             <meta-data
                 android:name="description"
-                android:value="@string/sample_plugin_description"/>
+                android:value="@string/sample_plugin_description" />
             <!-- Must be set to true as the plugin have to support manual creation of custom commands ! -->
             <meta-data
                 android:name="supportAddCustomCommands"
-                android:value="true"/>
+                android:value="true" />
             <!-- The plugin activity that will be called to add or edit a custom command ! -->
             <meta-data
                 android:name="customCommandsActivity"
-                android:value=".CCPluginActivity"/>
-        </service>
+                android:value=".CCPluginActivity" />
+        </receiver>
     </application>
 
 </manifest>

@@ -15,20 +15,21 @@
  */
 package tv.yatse.plugin.customcommands.api
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 /**
  * The CustomCommandsActivity Activity that plugin must extend if they support adding / editing Custom Commands
  *
  *
  * Activity should call : <br></br>
- * - [CustomCommandsActivity.cancelAndFinish] to cancel any change and return to Yatse.<br></br>
- * - [CustomCommandsActivity.saveAndFinish] to return the updated pluginCustomCommand for adding / saving in Yatse.
+ * - [CustomCommandsAppCompatActivity.cancelAndFinish] to cancel any change and return to Yatse.<br></br>
+ * - [CustomCommandsAppCompatActivity.saveAndFinish] to return the updated pluginCustomCommand for adding / saving in Yatse.
  */
-abstract class CustomCommandsActivity : Activity() {
-    protected lateinit var pluginCustomCommand: PluginCustomCommand
+abstract class CustomCommandsAppCompatActivity : AppCompatActivity() {
+    @JvmField
+    protected var pluginCustomCommand: PluginCustomCommand? = null
 
     /**
      * @return true if editing an existing custom command
@@ -38,8 +39,8 @@ abstract class CustomCommandsActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        isEditing = intent?.hasExtra(EXTRA_CUSTOM_COMMAND) ?: false
-        pluginCustomCommand = intent?.getParcelableExtra(EXTRA_CUSTOM_COMMAND) ?: PluginCustomCommand()
+        isEditing = intent?.hasExtra(CustomCommandsActivity.EXTRA_CUSTOM_COMMAND) ?: false
+        pluginCustomCommand = intent?.getParcelableExtra(CustomCommandsActivity.EXTRA_CUSTOM_COMMAND) ?: PluginCustomCommand()
         setResult(RESULT_CANCELED, Intent())
     }
 

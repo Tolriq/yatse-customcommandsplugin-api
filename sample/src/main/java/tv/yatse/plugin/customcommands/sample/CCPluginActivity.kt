@@ -13,51 +13,35 @@
  * limitations under the License.
  *
  */
+package tv.yatse.plugin.customcommands.sample
 
-package tv.yatse.plugin.customcommands.sample;
+import android.os.Bundle
+import android.view.View
+import android.widget.TextView
+import tv.yatse.plugin.customcommands.api.CustomCommandsActivity
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+class CCPluginActivity : CustomCommandsActivity() {
+    private lateinit var mViewTitle: TextView
+    private lateinit var mViewParam1: TextView
 
-import tv.yatse.plugin.customcommands.api.CustomCommandsActivity;
-
-public class CCPluginActivity extends CustomCommandsActivity {
-
-    TextView mViewTitle;
-    TextView mViewParam1;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_commands);
-
-        mViewTitle = findViewById(R.id.custom_command_title);
-        mViewParam1 = findViewById(R.id.custom_command_param1);
-
-        if (isEditing()) {
-            mViewTitle.setText(pluginCustomCommand.title());
-            mViewParam1.setText(pluginCustomCommand.param1());
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_custom_commands)
+        mViewTitle = findViewById(R.id.custom_command_title)
+        mViewParam1 = findViewById(R.id.custom_command_param1)
+        if (isEditing) {
+            mViewTitle.text = pluginCustomCommand.title
+            mViewParam1.text = pluginCustomCommand.param1
         }
-
-        findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelAndFinish();
-            }
-        });
-
-        findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+        findViewById<View>(R.id.btn_save).setOnClickListener { cancelAndFinish() }
+        findViewById<View>(R.id.btn_save).setOnClickListener {
+            pluginCustomCommand = pluginCustomCommand.copy(
                 // Custom command source field must always equals to plugin uniqueId !!
-                pluginCustomCommand.source(getString(R.string.plugin_unique_id));
-                pluginCustomCommand.title(String.valueOf(mViewTitle.getText()));
-                pluginCustomCommand.param1(String.valueOf(mViewParam1.getText()));
-                saveAndFinish();
-            }
-        });
-
+                source = getString(R.string.plugin_unique_id),
+                title = mViewTitle.text.toString(),
+                param1 = mViewParam1.text.toString()
+            )
+            saveAndFinish()
+        }
     }
 }

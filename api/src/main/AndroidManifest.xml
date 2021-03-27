@@ -14,10 +14,8 @@
 
   -->
 
-<manifest
-    package="tv.yatse.plugin.customcommands.api">
+<manifest package="tv.yatse.plugin.customcommands.api">
 
-    <application>
-    </application>
+    <application />
 
 </manifest>
